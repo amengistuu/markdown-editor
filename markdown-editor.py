@@ -1,3 +1,5 @@
+import os
+
 formats = ('plain', 'bold', 'italic', 'header', 'link', 'inline-code',
            'ordered-list', 'unordered-list', 'new-line')
 
@@ -127,6 +129,15 @@ while True:
     if cmd == '!help':
         helper()
     elif cmd == '!done':
+        # this assumes both the python file and output.md are in the same folder
+        # os.path.abspath(__file__) retrieves the absolute path of the current Python script
+        # os.path.dirname() extracts the directory path from it.
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        filename = 'output.md'
+        file_path = os.path.join(current_dir, filename)
+        with open(str(file_path), 'w', encoding='utf-8') as file:
+            file.write(formatted_text)
+            file.close()
         break
     elif cmd in formats:
         formatted_text = formatter(cmd, formatted_text)
